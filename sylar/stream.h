@@ -10,6 +10,7 @@
 #define __SYLAR_STREAM_H__
 
 #include <memory>
+
 #include "bytearray.h"
 
 namespace sylar {
@@ -20,6 +21,7 @@ namespace sylar {
 class Stream {
 public:
     typedef std::shared_ptr<Stream> ptr;
+
     /**
      * @brief 析构函数
      */
@@ -119,6 +121,6 @@ public:
     virtual void close() = 0;
 };
 
-}
+}  // namespace sylar
 
 #endif

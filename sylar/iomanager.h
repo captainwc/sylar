@@ -20,25 +20,27 @@ namespace sylar {
 class IOManager : public Scheduler, public TimerManager {
 public:
     typedef std::shared_ptr<IOManager> ptr;
-    typedef RWMutex RWMutexType;
+    typedef RWMutex                    RWMutexType;
 
     /**
      * @brief IO事件
      */
     enum Event {
         /// 无事件
-        NONE    = 0x0,
+        NONE = 0x0,
         /// 读事件(EPOLLIN)
-        READ    = 0x1,
+        READ = 0x1,
         /// 写事件(EPOLLOUT)
-        WRITE   = 0x4,
+        WRITE = 0x4,
     };
+
 private:
     /**
      * @brief Socket事件上线文类
      */
     struct FdContext {
         typedef Mutex MutexType;
+
         /**
          * @brief 事件上线文类
          */
@@ -131,6 +133,7 @@ public:
      * @brief 返回当前的IOManager
      */
     static IOManager* GetThis();
+
 protected:
     void tickle() override;
     bool stopping() override;
@@ -149,6 +152,7 @@ protected:
      * @return 返回是否可以停止
      */
     bool stopping(uint64_t& timeout);
+
 private:
     /// epoll 文件句柄
     int m_epfd = 0;
@@ -162,6 +166,6 @@ private:
     std::vector<FdContext*> m_fdContexts;
 };
 
-}
+}  // namespace sylar
 
 #endif

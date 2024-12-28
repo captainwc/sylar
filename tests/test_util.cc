@@ -1,17 +1,18 @@
-#include "sylar/sylar.h"
 #include <assert.h>
+
+#include "sylar/sylar.h"
 
 sylar::Logger::ptr g_logger = SYLAR_LOG_ROOT();
 
 void test_assert() {
     SYLAR_LOG_INFO(g_logger) << sylar::BacktraceToString(10);
-    //SYLAR_ASSERT2(0 == 1, "abcdef xx");
+    // SYLAR_ASSERT2(0 == 1, "abcdef xx");
 }
 
 int main(int argc, char** argv) {
     test_assert();
 
-    int arr[] = {1,3,5,7,9,11};
+    int arr[] = {1, 3, 5, 7, 9, 11};
 
     SYLAR_LOG_INFO(g_logger) << sylar::BinarySearch(arr, sizeof(arr) / sizeof(arr[0]), 0);
     SYLAR_LOG_INFO(g_logger) << sylar::BinarySearch(arr, sizeof(arr) / sizeof(arr[0]), 1);

@@ -12,4 +12,4 @@ public:
     bool onServerUp() override;
 };
 
-}
+}  // namespace name_space

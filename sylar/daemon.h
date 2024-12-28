@@ -2,7 +2,9 @@
 #define __SYLAR_DAEMON_H__
 
 #include <unistd.h>
+
 #include <functional>
+
 #include "sylar/singleton.h"
 
 namespace sylar {
@@ -32,10 +34,8 @@ typedef sylar::Singleton<ProcessInfo> ProcessInfoMgr;
  * @param[in] is_daemon 是否守护进程的方式
  * @return 返回程序的执行结果
  */
-int start_daemon(int argc, char** argv
-                 , std::function<int(int argc, char** argv)> main_cb
-                 , bool is_daemon);
+int start_daemon(int argc, char** argv, std::function<int(int argc, char** argv)> main_cb, bool is_daemon);
 
-}
+}  // namespace sylar
 
 #endif

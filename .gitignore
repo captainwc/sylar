@@ -28,3 +28,13 @@ stamp-h1
 *.pc
 depcomp
 *.xcodeproj
+
+
+.cache
+.vscode
+.vs
+.idea
+
+build
+bin
+lib

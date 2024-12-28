@@ -9,12 +9,14 @@
 #ifndef __SYLAR_SOCKET_H__
 #define __SYLAR_SOCKET_H__
 
-#include <memory>
 #include <netinet/tcp.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+
+#include <memory>
+
 #include "address.h"
 #include "noncopyable.h"
 
@@ -26,7 +28,7 @@ namespace sylar {
 class Socket : public std::enable_shared_from_this<Socket>, Noncopyable {
 public:
     typedef std::shared_ptr<Socket> ptr;
-    typedef std::weak_ptr<Socket> weak_ptr;
+    typedef std::weak_ptr<Socket>   weak_ptr;
 
     /**
      * @brief Socket类型
@@ -133,7 +135,7 @@ public:
     /**
      * @brief 获取sockopt模板 @see getsockopt
      */
-    template<class T>
+    template <class T>
     bool getOption(int level, int option, T& result) {
         socklen_t length = sizeof(T);
         return getOption(level, option, &result, &length);
@@ -147,7 +149,7 @@ public:
     /**
      * @brief 设置sockopt模板 @see setsockopt
      */
-    template<class T>
+    template <class T>
     bool setOption(int level, int option, const T& value) {
         return setOption(level, option, &value, sizeof(T));
     }
@@ -301,22 +303,22 @@ public:
     /**
      * @brief 获取协议簇
      */
-    int getFamily() const { return m_family;}
+    int getFamily() const { return m_family; }
 
     /**
      * @brief 获取类型
      */
-    int getType() const { return m_type;}
+    int getType() const { return m_type; }
 
     /**
      * @brief 获取协议
      */
-    int getProtocol() const { return m_protocol;}
+    int getProtocol() const { return m_protocol; }
 
     /**
      * @brief 返回是否连接
      */
-    bool isConnected() const { return m_isConnected;}
+    bool isConnected() const { return m_isConnected; }
 
     /**
      * @brief 是否有效(m_sock != -1)
@@ -338,7 +340,7 @@ public:
     /**
      * @brief 返回socket句柄
      */
-    int getSocket() const { return m_sock;}
+    int getSocket() const { return m_sock; }
 
     /**
      * @brief 取消读
@@ -359,6 +361,7 @@ public:
      * @brief 取消所有事件
      */
     bool cancelAll();
+
 protected:
     /**
      * @brief 初始化socket
@@ -374,6 +377,7 @@ protected:
      * @brief 初始化sock
      */
     virtual bool init(int sock);
+
 protected:
     /// socket句柄
     int m_sock;
@@ -401,26 +405,28 @@ public:
 
     SSLSocket(int family, int type, int protocol = 0);
     virtual Socket::ptr accept() override;
-    virtual bool bind(const Address::ptr addr) override;
-    virtual bool connect(const Address::ptr addr, uint64_t timeout_ms = -1) override;
-    virtual bool listen(int backlog = SOMAXCONN) override;
-    virtual bool close() override;
-    virtual int send(const void* buffer, size_t length, int flags = 0) override;
-    virtual int send(const iovec* buffers, size_t length, int flags = 0) override;
-    virtual int sendTo(const void* buffer, size_t length, const Address::ptr to, int flags = 0) override;
-    virtual int sendTo(const iovec* buffers, size_t length, const Address::ptr to, int flags = 0) override;
-    virtual int recv(void* buffer, size_t length, int flags = 0) override;
-    virtual int recv(iovec* buffers, size_t length, int flags = 0) override;
-    virtual int recvFrom(void* buffer, size_t length, Address::ptr from, int flags = 0) override;
-    virtual int recvFrom(iovec* buffers, size_t length, Address::ptr from, int flags = 0) override;
+    virtual bool        bind(const Address::ptr addr) override;
+    virtual bool        connect(const Address::ptr addr, uint64_t timeout_ms = -1) override;
+    virtual bool        listen(int backlog = SOMAXCONN) override;
+    virtual bool        close() override;
+    virtual int         send(const void* buffer, size_t length, int flags = 0) override;
+    virtual int         send(const iovec* buffers, size_t length, int flags = 0) override;
+    virtual int         sendTo(const void* buffer, size_t length, const Address::ptr to, int flags = 0) override;
+    virtual int         sendTo(const iovec* buffers, size_t length, const Address::ptr to, int flags = 0) override;
+    virtual int         recv(void* buffer, size_t length, int flags = 0) override;
+    virtual int         recv(iovec* buffers, size_t length, int flags = 0) override;
+    virtual int         recvFrom(void* buffer, size_t length, Address::ptr from, int flags = 0) override;
+    virtual int         recvFrom(iovec* buffers, size_t length, Address::ptr from, int flags = 0) override;
 
-    bool loadCertificates(const std::string& cert_file, const std::string& key_file);
+    bool                  loadCertificates(const std::string& cert_file, const std::string& key_file);
     virtual std::ostream& dump(std::ostream& os) const override;
+
 protected:
     virtual bool init(int sock) override;
+
 private:
     std::shared_ptr<SSL_CTX> m_ctx;
-    std::shared_ptr<SSL> m_ssl;
+    std::shared_ptr<SSL>     m_ssl;
 };
 
 /**
@@ -430,6 +436,6 @@ private:
  */
 std::ostream& operator<<(std::ostream& os, const Socket& sock);
 
-}
+}  // namespace sylar
 
 #endif

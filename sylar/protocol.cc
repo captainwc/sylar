@@ -1,20 +1,18 @@
 #include "sylar/protocol.h"
+
 #include "sylar/util.h"
 
 namespace sylar {
 
 ByteArray::ptr Message::toByteArray() {
     ByteArray::ptr ba(new ByteArray);
-    if(serializeToByteArray(ba)) {
+    if (serializeToByteArray(ba)) {
         return ba;
     }
     return nullptr;
 }
 
-Request::Request()
-    :m_sn(0)
-    ,m_cmd(0) {
-}
+Request::Request() : m_sn(0), m_cmd(0) {}
 
 bool Request::serializeToByteArray(ByteArray::ptr bytearray) {
     bytearray->writeFuint8(getType());
@@ -24,17 +22,12 @@ bool Request::serializeToByteArray(ByteArray::ptr bytearray) {
 }
 
 bool Request::parseFromByteArray(ByteArray::ptr bytearray) {
-    m_sn = bytearray->readUint32();
+    m_sn  = bytearray->readUint32();
     m_cmd = bytearray->readUint32();
     return true;
 }
 
-Response::Response()
-    :m_sn(0)
-    ,m_cmd(0)
-    ,m_result(404)
-    ,m_resultStr("unhandle") {
-}
+Response::Response() : m_sn(0), m_cmd(0), m_result(404), m_resultStr("unhandle") {}
 
 bool Response::serializeToByteArray(ByteArray::ptr bytearray) {
     bytearray->writeFuint8(getType());
@@ -46,16 +39,14 @@ bool Response::serializeToByteArray(ByteArray::ptr bytearray) {
 }
 
 bool Response::parseFromByteArray(ByteArray::ptr bytearray) {
-    m_sn = bytearray->readUint32();
-    m_cmd = bytearray->readUint32();
-    m_result = bytearray->readUint32();
+    m_sn        = bytearray->readUint32();
+    m_cmd       = bytearray->readUint32();
+    m_result    = bytearray->readUint32();
     m_resultStr = bytearray->readStringVint();
     return true;
 }
 
-Notify::Notify()
-    :m_notify(0) {
-}
+Notify::Notify() : m_notify(0) {}
 
 bool Notify::serializeToByteArray(ByteArray::ptr bytearray) {
     bytearray->writeFuint8(getType());
@@ -68,4 +59,4 @@ bool Notify::parseFromByteArray(ByteArray::ptr bytearray) {
     return true;
 }
 
-}
+}  // namespace sylar

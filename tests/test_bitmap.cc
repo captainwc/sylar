@@ -1,6 +1,6 @@
-#include "sylar/sylar.h"
 #include "sylar/ds/bitmap.h"
 #include "sylar/ds/roaring_bitmap.h"
+#include "sylar/sylar.h"
 
 static sylar::Logger::ptr g_logger = SYLAR_LOG_ROOT();
 #if 0
@@ -70,20 +70,19 @@ void init(uint32_t size, std::set<uint32_t> v = {}) {
 
     sylar::ds::Bitmap::ptr bb(new sylar::ds::Bitmap(size, 0xFF));
     *b &= *bb;
-#define XX(v) \
-        SYLAR_LOG_INFO(g_logger) << #v ": " << sylar::Join(v.begin(), v.end(), ",");
+#define XX(v) SYLAR_LOG_INFO(g_logger) << #v ": " << sylar::Join(v.begin(), v.end(), ",");
 
-#define XX_ASSERT(a, b) \
-        if(a != b) { \
-            std::cout << "size=" << size << std::endl; \
-            XX(v0); \
-            XX(v1); \
-            XX(v3); \
-            XX(v2); \
-            XX(v4); \
-            XX(v5); \
-            SYLAR_ASSERT(a == b); \
-        }
+#define XX_ASSERT(a, b)                            \
+    if (a != b) {                                  \
+        std::cout << "size=" << size << std::endl; \
+        XX(v0);                                    \
+        XX(v1);                                    \
+        XX(v3);                                    \
+        XX(v2);                                    \
+        XX(v4);                                    \
+        XX(v5);                                    \
+        SYLAR_ASSERT(a == b);                      \
+    }
 
     XX_ASSERT(v00, v5);
     if(v2 != v4 || v1 != v3) {
@@ -192,20 +191,19 @@ void test_op(size_t size, std::set<uint32_t> v1, std::set<uint32_t> v2) {
         return true;
     });
 
-#define XX(v) \
-        SYLAR_LOG_INFO(g_logger) << #v ": " << sylar::Join(v.begin(), v.end(), ",");
+#define XX(v) SYLAR_LOG_INFO(g_logger) << #v ": " << sylar::Join(v.begin(), v.end(), ",");
 
-#define XX_ASSERT(a, b) \
-        if(a != b) { \
-            std::cout << "size=" << size << std::endl;\
-            XX(v1); \
-            XX(v2); \
-            XX(and_sv); \
-            XX(and_sv2); \
-            XX(or_sv); \
-            XX(or_sv2); \
-            SYLAR_ASSERT(a == b); \
-        }
+#define XX_ASSERT(a, b)                            \
+    if (a != b) {                                  \
+        std::cout << "size=" << size << std::endl; \
+        XX(v1);                                    \
+        XX(v2);                                    \
+        XX(and_sv);                                \
+        XX(and_sv2);                               \
+        XX(or_sv);                                 \
+        XX(or_sv2);                                \
+        SYLAR_ASSERT(a == b);                      \
+    }
         XX_ASSERT(and_sv, and_sv2);
         XX_ASSERT(or_sv, or_sv2);
         if(xora2 != *a) {
@@ -253,8 +251,8 @@ int main(int argc, char** argv) {
 }
 #endif
 
-std::vector<sylar::ds::Bitmap::ptr> vs;
-std::vector<sylar::ds::Bitmap::ptr> vs2;
+std::vector<sylar::ds::Bitmap::ptr>        vs;
+std::vector<sylar::ds::Bitmap::ptr>        vs2;
 std::vector<sylar::ds::RoaringBitmap::ptr> vs3;
 
 int N = 1;
@@ -264,92 +262,78 @@ void init() {
     vs.resize(N);
     vs2.resize(N);
     vs3.resize(N);
-    for(int i = 0; i < N; ++i) {
-        sylar::ds::Bitmap::ptr r(new sylar::ds::Bitmap(M));
+    for (int i = 0; i < N; ++i) {
+        sylar::ds::Bitmap::ptr        r(new sylar::ds::Bitmap(M));
         sylar::ds::RoaringBitmap::ptr r2(new sylar::ds::RoaringBitmap());
-        for(int i = 0; i < M / 1; ++i) {
+        for (int i = 0; i < M / 1; ++i) {
             uint32_t v = rand() % M;
             r->set(v, true);
             r2->set(v, true);
         }
-        vs[i] = r;
+        vs[i]  = r;
         vs2[i] = r;
         vs3[i] = r2;
     }
 }
 
 void x_compress() {
-    for(auto& i : vs) {
+    for (auto& i : vs) {
         i = i->compress();
     }
 
-    for(auto& i : vs3) {
+    for (auto& i : vs3) {
         i = i->compress();
     }
 }
 
 void x_uncompress() {
-    for(auto& i : vs) {
+    for (auto& i : vs) {
         i = i->uncompress();
     }
 
-    for(auto& i : vs3) {
+    for (auto& i : vs3) {
         i = i->uncompress();
     }
-
 }
 
 void write_to_file(const std::string& name) {
     {
-        sylar::ByteArray::ptr ba(new sylar::ByteArray);
+        sylar::ByteArray::ptr  ba(new sylar::ByteArray);
         sylar::ds::Bitmap::ptr a;
-        for(auto& i : vs) {
+        for (auto& i : vs) {
             a = i;
             i->writeTo(ba);
         }
         ba->setPosition(0);
         ba->writeToFile(name);
 
-        std::cout << "compress= " << a->isCompress()
-                  << " rate=" << a->getCompressRate()
-                  << " size=" << a->getSize()
-                  << " count=" << a->getCount()
-                  << std::endl;
-
+        std::cout << "compress= " << a->isCompress() << " rate=" << a->getCompressRate() << " size=" << a->getSize()
+                  << " count=" << a->getCount() << std::endl;
 
         a.reset(new sylar::ds::Bitmap(0));
         a->readFrom(ba);
 
-        std::cout << "*compress= " << a->isCompress()
-                  << " rate=" << a->getCompressRate()
-                  << " size=" << a->getSize()
-                  << " count=" << a->getCount()
-                  << std::endl;
-
+        std::cout << "*compress= " << a->isCompress() << " rate=" << a->getCompressRate() << " size=" << a->getSize()
+                  << " count=" << a->getCount() << std::endl;
     }
 
     {
-        sylar::ByteArray::ptr ba(new sylar::ByteArray);
+        sylar::ByteArray::ptr         ba(new sylar::ByteArray);
         sylar::ds::RoaringBitmap::ptr a;
-        for(auto& i : vs3) {
+        for (auto& i : vs3) {
             a = i;
             i->writeTo(ba);
         }
         ba->setPosition(0);
         ba->writeToFile(name + ".roaring");
 
-        std::cout << "-compress= " << a->toString()
-                  << std::endl;
-
+        std::cout << "-compress= " << a->toString() << std::endl;
 
         a.reset(new sylar::ds::RoaringBitmap);
         a->readFrom(ba);
 
-        std::cout << "=compress= " << a->toString()
-                  << std::endl;
-
+        std::cout << "=compress= " << a->toString() << std::endl;
     }
-
 }
 
 void load_from_file(const std::string& name) {
@@ -358,24 +342,21 @@ void load_from_file(const std::string& name) {
     ba->setPosition(0);
     sylar::ds::Bitmap::ptr a(new sylar::ds::Bitmap(0));
     a->readFrom(ba);
-    std::cout << "compress= " << a->isCompress()
-              << " rate=" << a->getCompressRate()
-              << " size=" << a->getSize()
-              << " count=" << a->getCount()
-              << std::endl;
+    std::cout << "compress= " << a->isCompress() << " rate=" << a->getCompressRate() << " size=" << a->getSize()
+              << " count=" << a->getCount() << std::endl;
 }
 
 void test_uncompress() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             vs2[i]->uncompress();
         }
     }
 }
 
 void test_uncompress2() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             sylar::ds::Bitmap::ptr b(new sylar::ds::Bitmap(M));
             *b |= *vs2[i];
         }
@@ -383,8 +364,8 @@ void test_uncompress2() {
 }
 
 void test_uncompress3() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             sylar::ds::Bitmap::ptr b(new sylar::ds::Bitmap(M));
             *b |= *vs2[i];
 
@@ -394,8 +375,8 @@ void test_uncompress3() {
 }
 
 void test_uncompress4() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             sylar::ds::Bitmap::ptr b(new sylar::ds::Bitmap(M, 0xff));
             *b &= *vs2[i];
 
@@ -404,11 +385,9 @@ void test_uncompress4() {
     }
 }
 
-
-
 void test_and() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             auto r = vs2[i]->uncompress();
             *r &= *vs[n];
         }
@@ -416,8 +395,8 @@ void test_and() {
 }
 
 void test_or() {
-    for(int i = 0; i < N; ++i) {
-        for(int n = i + 1; n < N; ++n) {
+    for (int i = 0; i < N; ++i) {
+        for (int n = i + 1; n < N; ++n) {
             auto r = vs2[i]->uncompress();
             *r |= *vs[n];
         }
@@ -432,32 +411,27 @@ void run(const char* name, std::function<void()> cb) {
 }
 
 void check() {
-    //for(auto& i : vs) {
-    //}
+    // for(auto& i : vs) {
+    // }
 }
 
 void test_roaring_bitmap() {
     sylar::ds::RoaringBitmap::ptr rb(new sylar::ds::RoaringBitmap);
-    for(int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 10; ++i) {
         rb->set(rand(), true);
     }
 
-    for(auto it = rb->begin();
-            it != rb->end(); ++it) {
+    for (auto it = rb->begin(); it != rb->end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
-    std::cout << "count=" << rb->getCount()
-              << " " << rb->toString() << std::endl;
+    std::cout << "count=" << rb->getCount() << " " << rb->toString() << std::endl;
     rb = rb->compress();
-    std::cout << "count=" << rb->getCount()
-              << " " << rb->toString() << std::endl;
-    for(auto it = rb->rbegin();
-            it != rb->rend(); ++it) {
+    std::cout << "count=" << rb->getCount() << " " << rb->toString() << std::endl;
+    for (auto it = rb->rbegin(); it != rb->rend(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
-
 }
 
 int main(int argc, char** argv) {
@@ -467,10 +441,10 @@ int main(int argc, char** argv) {
     run("test_or", test_or);
     run("write_to_file", std::bind(write_to_file, "test.dat"));
     run("compress", x_compress);
-    //run("uncompress", test_uncompress);
-    //run("uncompress2", test_uncompress2);
-    //run("uncompress3", test_uncompress3);
-    //run("uncompress4", test_uncompress4);
+    // run("uncompress", test_uncompress);
+    // run("uncompress2", test_uncompress2);
+    // run("uncompress3", test_uncompress3);
+    // run("uncompress4", test_uncompress4);
     run("write_to_file", std::bind(write_to_file, "test2.dat"));
     run("uncompress", x_uncompress);
     run("write_to_file", std::bind(write_to_file, "test3.dat"));
@@ -479,4 +453,3 @@ int main(int argc, char** argv) {
     run("test_or", test_or);
     return 0;
 }
-

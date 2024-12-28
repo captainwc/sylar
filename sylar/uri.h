@@ -9,9 +9,11 @@
 #ifndef __SYLAR_URI_H__
 #define __SYLAR_URI_H__
 
+#include <stdint.h>
+
 #include <memory>
 #include <string>
-#include <stdint.h>
+
 #include "address.h"
 
 namespace sylar {
@@ -46,17 +48,17 @@ public:
     /**
      * @brief 返回scheme
      */
-    const std::string& getScheme() const { return m_scheme;}
+    const std::string& getScheme() const { return m_scheme; }
 
     /**
      * @brief 返回用户信息
      */
-    const std::string& getUserinfo() const { return m_userinfo;}
+    const std::string& getUserinfo() const { return m_userinfo; }
 
     /**
      * @brief 返回host
      */
-    const std::string& getHost() const { return m_host;}
+    const std::string& getHost() const { return m_host; }
 
     /**
      * @brief 返回路径
@@ -66,12 +68,12 @@ public:
     /**
      * @brief 返回查询条件
      */
-    const std::string& getQuery() const { return m_query;}
+    const std::string& getQuery() const { return m_query; }
 
     /**
      * @brief 返回fragment
      */
-    const std::string& getFragment() const { return m_fragment;}
+    const std::string& getFragment() const { return m_fragment; }
 
     /**
      * @brief 返回端口
@@ -82,43 +84,43 @@ public:
      * @brief 设置scheme
      * @param v scheme
      */
-    void setScheme(const std::string& v) { m_scheme = v;}
+    void setScheme(const std::string& v) { m_scheme = v; }
 
     /**
      * @brief 设置用户信息
      * @param v 用户信息
      */
-    void setUserinfo(const std::string& v) { m_userinfo = v;}
+    void setUserinfo(const std::string& v) { m_userinfo = v; }
 
     /**
      * @brief 设置host信息
      * @param v host
      */
-    void setHost(const std::string& v) { m_host = v;}
+    void setHost(const std::string& v) { m_host = v; }
 
     /**
      * @brief 设置路径
      * @param v 路径
      */
-    void setPath(const std::string& v) { m_path = v;}
+    void setPath(const std::string& v) { m_path = v; }
 
     /**
      * @brief 设置查询条件
      * @param v
      */
-    void setQuery(const std::string& v) { m_query = v;}
+    void setQuery(const std::string& v) { m_query = v; }
 
     /**
      * @brief 设置fragment
      * @param v fragment
      */
-    void setFragment(const std::string& v) { m_fragment = v;}
+    void setFragment(const std::string& v) { m_fragment = v; }
 
     /**
      * @brief 设置端口号
      * @param v 端口
      */
-    void setPort(int32_t v) { m_port = v;}
+    void setPort(int32_t v) { m_port = v; }
 
     /**
      * @brief 序列化到输出流
@@ -136,12 +138,13 @@ public:
      * @brief 获取Address
      */
     Address::ptr createAddress() const;
-private:
 
+private:
     /**
      * @brief 是否默认端口
      */
     bool isDefaultPort() const;
+
 private:
     /// schema
     std::string m_scheme;
@@ -159,6 +162,6 @@ private:
     int32_t m_port;
 };
 
-}
+}  // namespace sylar
 
 #endif

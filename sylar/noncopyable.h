@@ -37,6 +37,6 @@ public:
     Noncopyable& operator=(const Noncopyable&) = delete;
 };
 
-}
+}  // namespace sylar
 
 #endif

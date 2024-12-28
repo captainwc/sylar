@@ -9,9 +9,10 @@
 #ifndef __SYLAR_FIBER_H__
 #define __SYLAR_FIBER_H__
 
-#include <memory>
-#include <functional>
 #include <ucontext.h>
+
+#include <functional>
+#include <memory>
 
 namespace sylar {
 
@@ -21,7 +22,8 @@ class Scheduler;
  * @brief 协程类
  */
 class Fiber : public std::enable_shared_from_this<Fiber> {
-friend class Scheduler;
+    friend class Scheduler;
+
 public:
     typedef std::shared_ptr<Fiber> ptr;
 
@@ -42,6 +44,7 @@ public:
         /// 异常状态
         EXCEPT
     };
+
 private:
     /**
      * @brief 无参构造函数
@@ -98,14 +101,14 @@ public:
     /**
      * @brief 返回协程id
      */
-    uint64_t getId() const { return m_id;}
+    uint64_t getId() const { return m_id; }
 
     /**
      * @brief 返回协程状态
      */
-    State getState() const { return m_state;}
-public:
+    State getState() const { return m_state; }
 
+public:
     /**
      * @brief 设置当前线程的运行协程
      * @param[in] f 运行协程
@@ -150,6 +153,7 @@ public:
      * @brief 获取当前协程的id
      */
     static uint64_t GetFiberId();
+
 private:
     /// 协程id
     uint64_t m_id = 0;
@@ -165,6 +169,6 @@ private:
     std::function<void()> m_cb;
 };
 
-}
+}  // namespace sylar
 
 #endif
