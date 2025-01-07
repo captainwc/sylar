@@ -501,6 +501,12 @@ elseif(MYSQL_CONFIG_EXECUTABLE)
                         "\"${MYSQL_CONFIG_EXECUTABLE}\"")
   endif()
 
+  # BUGFIX: debian12 using mariadb, and MYSQL_INCLUDE_DIR is xxx;xxx ,so couldn't find mysql.h here.
+  string(FIND "${MYSQL_INCLUDE_DIR}" "mariadb" MARIADB_INDEX)
+  if(NOT "${MARIADB_INDEX}" STREQUAL "-1")
+    set(MYSQL_INCLUDE_DIR /usr/include/mariadb)
+  endif()
+
   if(NOT EXISTS "${MYSQL_INCLUDE_DIR}/mysql.h")
     message(FATAL_ERROR "Could not find \"mysql.h\" in \"${MYSQL_INCLUDE_DIR}\" "
                         "found from running \"${MYSQL_CONFIG_EXECUTABLE}\"")
