@@ -11,6 +11,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <csignal>
+
 #include "fiber.h"
 #include "log.h"
 
