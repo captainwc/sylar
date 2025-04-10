@@ -24,7 +24,7 @@ RUN apt update \
     && cd /tmp/hiredis-vip && make -j8 && make install && cd - \
     && sed -i '34i#include <stdlib.h>' /usr/local/include/hiredis-vip/adapters/libevent.h \
     && wget -O /tmp/zookeeper.zip https://shuaikai-bucket0001.oss-cn-shanghai.aliyuncs.com/pic_bed/2025_4/zookeeper-client-c-3.10.0-ubuntu22.zip \
-    && cd /tmp && unzip zookeeper.zip && mkdir /usr/local/include/zookeeper && mv zookeeper/include/* /usr/local/include/zookeeper/ && mv zookeeper/lib/* /usr/local/lib/ && cd - \
+    && cd /tmp && unzip zookeeper.zip && mv zookeeper/include /usr/local/include/zookeeper && mv zookeeper/lib/* /usr/local/lib/ && cd - \
     && ln -sf /usr/local/lib/libzookeeper_st.so.2.0.0 /usr/local/lib/libzookeeper_st.so \
     && ln -sf /usr/local/lib/libzookeeper_st.so.2.0.0 /usr/local/lib/libzookeeper_st.so.2 \
     && ln -sf /usr/local/lib/libzookeeper_mt.so.2.0.0 /usr/local/lib/libzookeeper_mt.so \
