@@ -30,6 +30,7 @@ RUN apt update \
     && ln -sf /usr/local/lib/libzookeeper_mt.so.2.0.0 /usr/local/lib/libzookeeper_mt.so \
     && ln -sf /usr/local/lib/libzookeeper_mt.so.2.0.0 /usr/local/lib/libzookeeper_mt.so.2 \
     && ln -sf /usr/lib/x86_64-linux-gnu/libmysqlclient.so.21.2.41 /usr/lib/x86_64-linux-gnu/libmysqlclient_r.so \
+    && ldconfig -v \
     && git clone https://github.com/captainwc/sylar.git \
     && apt clean && rm -rf /var/lib/apt/lists/*  /tmp/*
 
