@@ -1,4 +1,12 @@
+> [!note]
 > 构建说明 [sylar-build.pdf](https://shuaikai-bucket0001.oss-cn-shanghai.aliyuncs.com/pic_bed/2025_3/sylar-build.pdf)
+
+> [!important]
+> 如果不想自己构建，可以使用本项目中的`dockerfile`一键搭建环境。区别如下：
+>  1. 使用的sylar源码来自本仓库而非源仓库。不过鉴于原仓库已经基本不更新，本仓库也只是做了部分编译错误修改和格式化，并未修改任何代码逻辑，也等同于是原汁原味。具体修改如下：
+>      1. 修改了部分编译不通过的代码
+>      2. 按照本人习惯的方式对全部代码进行了格式化（格式参见.clang-format文件）
+>  3. 使用的`zookeeper-client-c`库为本人自行从源码构建后的版本`3.10.0`，运行本项目无问题。不放心可以参考[官方教程](https://github.com/apache/zookeeper/blob/master/zookeeper-docs/src/main/resources/markdown/zookeeperProgrammers.md#C+Binding)自行构建
 
 # 视频地址
 [\[C++高级教程\]从零开始开发服务器框架(sylar)](https://www.bilibili.com/video/av53602631/?from=www.sylar.top "")
